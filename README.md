@@ -26,5 +26,5 @@ Teacher: Машина Екатерина Алексеевна
 <img src="https://github.com/andrey551/Calculus-2023/blob/main/P32151/Dau_Cong_Tuan_Anh/Lab1/image/algorithm_scheme.png"/>
 
 # Result:
-<img src="https://github.com/andrey551/Calculus-2023/blob/main/P32151/Dau_Cong_Tuan_Anh/Lab1/image/example_1.png />
+<img src="https://github.com/andrey551/Calculus-2023/blob/main/P32151/Dau_Cong_Tuan_Anh/Lab1/image/example_1.png" />
 <img src="https://github.com/andrey551/Calculus-2023/blob/main/P32151/Dau_Cong_Tuan_Anh/Lab1/image/example_2.png" />

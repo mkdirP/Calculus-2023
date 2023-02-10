@@ -7,7 +7,7 @@
 #### Group: P32151
 #### Teacher: Машина Екатерина Алексеевна
 
-#### Task: Develope an program that solve system of equation by Gauss - Seidel method
+#### Task: Develop an program that solve system of equations by Gauss - Seidel method
 - Program must be handle following requirements:\
 Have two option for user give input: By console and by file 
 - Input must be handle folling requirements: \
@@ -19,12 +19,15 @@ Determinant of matrix \
 Vector of result variable \
 Vector of  residual 
 
-# Formular: 
+### Formular: 
 <img src="https://github.com/andrey551/Calculus-2023/blob/main/P32151/Dau_Cong_Tuan_Anh/Lab1/image/formular.png" />
 
-# Algorithm scheme:
+### Algorithm scheme:
 <img src="https://github.com/andrey551/Calculus-2023/blob/main/P32151/Dau_Cong_Tuan_Anh/Lab1/image/algorithm_scheme.png"/>
 
-# Result:
+### Result:
 <img src="https://github.com/andrey551/Calculus-2023/blob/main/P32151/Dau_Cong_Tuan_Anh/Lab1/image/example_1.png" />
 <img src="https://github.com/andrey551/Calculus-2023/blob/main/P32151/Dau_Cong_Tuan_Anh/Lab1/image/example_2.png" />
+
+### Conclusion: After this laboratory work, I have learnt many new: resolve system of equations by method Gauss, Gauss method with choice
+### main element, iterative methods, method Gauss - Seidel. As far as I understand, the first two methods, we use linear algebra, while the latter two, we use the convergent method: i.e. converge to the approximate result, when the error is less than the given epsilon

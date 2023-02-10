@@ -7,7 +7,7 @@
 #### Group: P32151
 #### Teacher: Машина Екатерина Алексеевна
 
-# Task: Develope an program that solve system of equation by Gauss - Seidel method
+#### Task: Develope an program that solve system of equation by Gauss - Seidel method
 - Program must be handle following requirements:\
 Have two option for user give input: By console and by file 
 - Input must be handle folling requirements: \

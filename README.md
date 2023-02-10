@@ -1,11 +1,11 @@
-### ITMO University
+# ITMO University
 ## Software and application systems
-# Subject: Calculus
-# Laboratory No.1
-# Variant: 9
-Student : Dau Cong Tuan Anh
-Group: P32151
-Teacher: Машина Екатерина Алексеевна
+### Subject: Calculus
+### Laboratory No.1
+### Variant: 9
+#### Student : Dau Cong Tuan Anh
+#### Group: P32151
+#### Teacher: Машина Екатерина Алексеевна
 
 # Task: Develope an program that solve system of equation by Gauss - Seidel method
 - Program must be handle following requirements:\

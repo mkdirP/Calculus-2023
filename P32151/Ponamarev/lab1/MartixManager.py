@@ -81,7 +81,8 @@ class MatrixContainer:
             # self.solutions = free_members - coeffs_matrix.dot(self.solutions)
 
             # Метод Гаусса-Зейделя заключается в том, что элементы вектора иксов берутся из предыдущей итерации
-            for i in range(n): self.solutions[i] = free_members[i] - sum(coeffs_matrix[i] * self.solutions)
+            for i in range(n):
+                self.solutions[i] = free_members[i] - sum(coeffs_matrix[i] * self.solutions)
 
             k += 1
             if last_discrepancies - self.calculate_discrepancies() < 0:

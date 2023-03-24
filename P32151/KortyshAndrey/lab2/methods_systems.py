@@ -20,25 +20,25 @@ def newton_method(x_0: float, y_0: float, epsilon: float, system: typing.Tuple[A
         typing.Tuple[typing.Tuple[float, float], int, typing.Tuple[float, float], typing.Tuple[float, float]]:
     iteration_count = 0
 
-    cur_x = x_0
-    cur_y = y_0
-    prev_x = 1e9
-    prev_y = 1e9
-    callable_f = lambdify([x, y], system[0], 'numpy')
-    callable_g = lambdify([x, y], system[1], 'numpy')
+    cur_x: float = x_0
+    cur_y: float = y_0
+    prev_x: float = 1e9
+    prev_y: float = 1e9
+    callable_f: Callable[[float, float], float] = lambdify([x, y], system[0], 'numpy')
+    callable_g: Callable[[float, float], float] = lambdify([x, y], system[1], 'numpy')
 
-    callable_f_diff_x = lambdify([x, y], system[0].diff(x), 'numpy')
-    callable_f_diff_y = lambdify([x, y], system[0].diff(y), 'numpy')
-    callable_g_diff_x = lambdify([x, y], system[1].diff(x), 'numpy')
-    callable_g_diff_y = lambdify([x, y], system[1].diff(y), 'numpy')
+    callable_f_diff_x: Callable[[float, float], float] = lambdify([x, y], system[0].diff(x), 'numpy')
+    callable_f_diff_y: Callable[[float, float], float] = lambdify([x, y], system[0].diff(y), 'numpy')
+    callable_g_diff_x: Callable[[float, float], float] = lambdify([x, y], system[1].diff(x), 'numpy')
+    callable_g_diff_y: Callable[[float, float], float] = lambdify([x, y], system[1].diff(y), 'numpy')
 
     iteration_function_y: Callable[[float, float], float] = lambda x1, y1: (callable_f(x1, y1)*callable_g_diff_x(x1, y1)/callable_f_diff_x(x1, y1) - callable_g(x1, y1)) / \
                             (-callable_g_diff_x(x1, y1)*callable_f_diff_y(x1, y1)/callable_f_diff_x(x1, y1) + callable_g_diff_y(x1, y1))
     iteration_function_x: Callable[[float, float, float], float] = lambda x1, y1, delta_y1: (-callable_f_diff_y(x1, y1) * delta_y1 - callable_f(x1, y1)) / callable_f_diff_x(x1, y1)
 
     while abs(cur_x - prev_x) > epsilon or abs(cur_y - prev_y) > epsilon:
-        delta_y = iteration_function_y(cur_x, cur_y)
-        delta_x = iteration_function_x(cur_x, cur_y, delta_y)
+        delta_y: float = iteration_function_y(cur_x, cur_y)
+        delta_x: float = iteration_function_x(cur_x, cur_y, delta_y)
         cur_x, prev_x, cur_y, prev_y = cur_x + delta_x, cur_x, cur_y + delta_y, cur_y
         iteration_count += 1
     return tuple([cur_x, cur_y]), iteration_count, tuple([cur_x - prev_x, cur_y - prev_y]), tuple([callable_f(cur_x, cur_y), callable_g(cur_x, cur_y)])

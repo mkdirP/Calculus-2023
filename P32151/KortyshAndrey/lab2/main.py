@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sympy import *
 from methods_equations import x, available_functions, chord_method, secant_method, SimpleIterationException, simple_iteration
+from methods_systems import available_systems, newton_method
 from os import getcwd
 
 
@@ -14,9 +15,24 @@ def get_function_by_number(number: int) -> Add:
     return available_functions[index]
 
 
+def get_system_by_number(number: int) -> typing.Tuple[Add, Add]:
+    index = number - 1
+    if index < 0 or index >= len(available_systems):
+        raise ValueError
+    return available_systems[index]
+
+
 def print_all_functions():
     for index, function_string in enumerate(available_functions):
         print(f"{index+1}: {function_string}")
+
+
+def print_all_systems():
+    for index, system in enumerate(available_systems):
+        print(f"System #{index + 1}")
+        for equation in system:
+            print(equation)
+        print()
 
 
 # Plots a function on an interval
@@ -29,8 +45,14 @@ def plot_function(a: int, b: int, function: Callable[[float], float]) -> None:
     plt.show()
 
 
+def get_error_length(eps: float):
+    if "e" in str(eps):
+        return abs(int(str(eps).split("e")[1]))
+    return len(str(eps).split(".")[1])
+
+
 def print_results(results: typing.Tuple[float, float, int], epsilon, file_flag=False, file_name=None):
-    error_length = len(str(epsilon).split(".")[1])
+    error_length =get_error_length(epsilon)
     output = f"Method finished in {results[2]} iterations." + "\n" + \
              f"Result value is: {round(results[0], error_length)}." + "\n" +\
              f"Function value of result: {round(results[1], error_length+3)}"
@@ -39,6 +61,17 @@ def print_results(results: typing.Tuple[float, float, int], epsilon, file_flag=F
             file.writelines(output)
     else:
         print(output)
+
+
+def print_system_results(results: typing.Tuple[typing.Tuple[float, float], int, typing.Tuple[float, float], typing.Tuple[float, float]], epsilon: float):
+    error_length = get_error_length(epsilon)
+    answers = results[0]
+    errors = results[2]
+    equations = results[3]
+    print(f"Results are: x = {round(answers[0], error_length)}, y = {round(answers[1], error_length)}")
+    print(f"Number of iterations: {results[1]}")
+    print(f"Errors vector: error_x = {round(errors[0], error_length + 3)}, error_y = {round(errors[1], error_length + 3)}")
+    print(f"Equations value with result x, y: f = {round(equations[0], error_length)}, g = {round(equations[1], error_length)}")
 
 
 # Main function to communicate with user about nonlinear equations
@@ -106,7 +139,16 @@ def nonlinear_equation_main():
 
 
 def system_of_equations():
-    pass
+    print_all_systems()
+    try:
+        system_number = int(input("Input system number: "))
+        system = get_system_by_number(system_number)
+        x_0, y_0 = [float(i) for i in input("Input initial values for x and y with space between them, for example, 2.1 4\n").split()]
+        epsilon = float(input("Input allowed error: "))
+        print_system_results(newton_method(x_0, y_0, epsilon, system), epsilon)
+    except ValueError:
+        print("Wrong number")
+        return
 
 
 # Main function to communicate with user

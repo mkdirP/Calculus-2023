@@ -8,10 +8,10 @@ from sympy import *
 
 x = Symbol('x')
 available_functions: List[Add] = [
-    cos(0.5*x) + sin(0.5*x) - 0.5,
-    3*x - exp(x) + 5,
-    x**3 - 0.1*x**2 + 0.5,
-    2*x - cos(3*x) - 5
+    cos(0.5*x) + sin(0.5*x) - 0.5,  # -10 -5
+    3*x - exp(x) + 5,  # -2 2
+    x**3 - 0.1*x**2 + 0.5,  # -2 2
+    2*x - cos(3*x) - 5  # -5 5 + iteration method works !!!
 ]
 
 

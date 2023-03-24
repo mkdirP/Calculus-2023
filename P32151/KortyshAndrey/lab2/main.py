@@ -29,14 +29,19 @@ def plot_function(a: int, b: int, function: Callable[[float], float]) -> None:
     plt.show()
 
 
-def print_results(results: typing.Tuple[float, float, int], epsilon):
+def print_results(results: typing.Tuple[float, float, int], epsilon, file_flag=False, file_name=None):
     error_length = len(str(epsilon).split(".")[1])
-    print(f"Method finished in {results[2]} iterations.")
-    print(f"Result value is: {round(results[0], error_length)}.")
-    print(f"Function value of result: {round(results[1], error_length+3)}")
+    output = f"Method finished in {results[2]} iterations." + "\n" + \
+             f"Result value is: {round(results[0], error_length)}." + "\n" +\
+             f"Function value of result: {round(results[1], error_length+3)}"
+    if file_flag:
+        with open(getcwd() + '/' + file_name, "w") as file:
+            file.writelines(output)
+    else:
+        print(output)
 
 
-# Main function to communicate with user
+# Main function to communicate with user about nonlinear equations
 def nonlinear_equation_main():
     try:
         print_all_functions()
@@ -49,11 +54,13 @@ def nonlinear_equation_main():
         input_stream_id = int(input("Input:\n1 to get data interval and error from file\n2 to proceed via console\n"))
         if input_stream_id > 2 or input_stream_id < 1:
             raise ValueError
-        file_flag = input_stream_id == 1
+        file_in_flag = input_stream_id == 1
+        output_stream_id = int(input("Input:\n1 to output data to file\n2 to output to console\n"))
+        file_out_flag = output_stream_id == 1
     except ValueError:
         print("Wrong number")
         return
-    if not file_flag:
+    if not file_in_flag:
         try:
             a, b = [float(i) for i in input("Input interval start and end with space between them, for example, 2.1 4:\n").split()]
             epsilon = float(input("Input allowed error: "))
@@ -86,12 +93,32 @@ def nonlinear_equation_main():
         print("No such method.")
         return
     try:
-        print_results(method(a, b, epsilon, func), epsilon)
+        output_filename = None
+        if file_out_flag:
+            output_filename = input("Input output filename: ")
+        print_results(method(a, b, epsilon, func), epsilon, file_out_flag, output_filename)
     except ValueError:
         print("Incorrect interval")
     except SimpleIterationException:
         print("Can not build proper iteration function")
+    except FileNotFoundError:
+        print("Output file does not exist")
 
 
+def system_of_equations():
+    pass
+
+
+# Main function to communicate with user
 if __name__ == "__main__":
-    nonlinear_equation_main()
+    try:
+        n = int(input("Input:\n1 to solve nonlinear equation\n2 to solve system of nonlinear equations\n"))
+        if n > 2 or n < 1:
+            raise ValueError
+    except ValueError:
+        print("Incorrect data")
+        exit(0)
+    if n == 1:
+        nonlinear_equation_main()
+    elif n == 2:
+        system_of_equations()

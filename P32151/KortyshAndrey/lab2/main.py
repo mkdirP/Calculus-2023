@@ -3,6 +3,7 @@ from typing import Callable
 import numpy as np
 import matplotlib.pyplot as plt
 from sympy import *
+from sympy.plotting.plot import MatplotlibBackend
 from methods_equations import x, available_functions, chord_method, secant_method, SimpleIterationException, simple_iteration
 from methods_systems import available_systems, newton_method, y
 from os import getcwd
@@ -36,20 +37,26 @@ def print_all_systems():
 
 
 # Plots a function on an interval
-def plot_function(a: int, b: int, function: Callable[[float], float]) -> None:
+def plot_function(a: int, b: int, function: Callable[[float], float], solution: typing.Tuple[float, float]) -> None:
     x_vals = np.linspace(a - 2, b + 2, 1000)
     y_vals = list(map(function, x_vals))
     plt.plot(x_vals, y_vals, )
     plt.xlabel("x - axis")
     plt.ylabel("y - axis")
+    plt.scatter([solution[0]], solution[1], color="red")
     plt.show()
 
 
-def plot_system(system: typing.Tuple[Add, Add]) -> None:
+def plot_system(system: typing.Tuple[Add, Add], solution: typing.Tuple[float, float]) -> None:
     p1 = plot_implicit(Eq(system[0], 0), x_var=x, y_var=y, show=False)
     p2 = plot_implicit(Eq(system[1], 0), x_var=x, y_var=y, line_color="Red", show=False)
     p1.append(p2[0])
-    p1.show()
+    backend = MatplotlibBackend(p1)
+    backend.process_series()
+    backend.fig.tight_layout()
+    plt = backend.plt
+    plt.scatter([solution[0]], [solution[1]], color="Green")
+    plt.show()
 
 
 def get_error_length(eps: float):
@@ -122,7 +129,6 @@ def nonlinear_equation_main():
         except FileNotFoundError:
             print("No such file")
             return
-    plot_function(a, b, lambdify(x, func, 'numpy'))
     if method_name == "Chord":
         method = chord_method
     elif method_name == "Secant":
@@ -136,7 +142,9 @@ def nonlinear_equation_main():
         output_filename = None
         if file_out_flag:
             output_filename = input("Input output filename: ")
-        print_results(method(a, b, epsilon, func), epsilon, file_out_flag, output_filename)
+        results = method(a, b, epsilon, func)
+        plot_function(a, b, lambdify(x, func, 'numpy'), tuple([results[0], lambdify(x, func, 'numpy')(results[0])]))
+        print_results(results, epsilon, file_out_flag, output_filename)
     except ValueError:
         print("Incorrect interval")
     except SimpleIterationException:
@@ -152,8 +160,9 @@ def system_of_equations():
         system = get_system_by_number(system_number)
         x_0, y_0 = [float(i) for i in input("Input initial values for x and y with space between them, for example, 2.1 4\n").split()]
         epsilon = float(input("Input allowed error: "))
-        plot_system(system)
-        print_system_results(newton_method(x_0, y_0, epsilon, system), epsilon)
+        results = newton_method(x_0, y_0, epsilon, system)
+        print_system_results(results, epsilon)
+        plot_system(system, results[0])
     except ValueError:
         print("Wrong number")
         return

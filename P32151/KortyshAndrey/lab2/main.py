@@ -143,7 +143,7 @@ def nonlinear_equation_main():
         if file_out_flag:
             output_filename = input("Input output filename: ")
         results = method(a, b, epsilon, func)
-        plot_function(a, b, lambdify(x, func, 'numpy'), tuple([results[0], lambdify(x, func, 'numpy')(results[0])]))
+        plot_function(a, b, lambdify(x, func, 'numpy'), (results[0], lambdify(x, func, 'numpy')(results[0])))
         print_results(results, epsilon, file_out_flag, output_filename)
     except ValueError:
         print("Incorrect interval")

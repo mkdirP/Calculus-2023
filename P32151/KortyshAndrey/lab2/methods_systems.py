@@ -18,7 +18,7 @@ available_systems = [
 
 def newton_method(x_0: float, y_0: float, epsilon: float, system: typing.Tuple[Add, Add]) -> \
         typing.Tuple[typing.Tuple[float, float], int, typing.Tuple[float, float], typing.Tuple[float, float]]:
-    iteration_count = 0
+    iteration_count: int = 0
 
     cur_x: float = x_0
     cur_y: float = y_0
@@ -41,4 +41,4 @@ def newton_method(x_0: float, y_0: float, epsilon: float, system: typing.Tuple[A
         delta_x: float = iteration_function_x(cur_x, cur_y, delta_y)
         cur_x, prev_x, cur_y, prev_y = cur_x + delta_x, cur_x, cur_y + delta_y, cur_y
         iteration_count += 1
-    return tuple([cur_x, cur_y]), iteration_count, tuple([cur_x - prev_x, cur_y - prev_y]), tuple([callable_f(cur_x, cur_y), callable_g(cur_x, cur_y)])
+    return (cur_x, cur_y), iteration_count, (cur_x - prev_x, cur_y - prev_y), (callable_f(cur_x, cur_y), callable_g(cur_x, cur_y))

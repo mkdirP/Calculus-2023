@@ -1,18 +1,18 @@
-from methods import functions, method_names, methods
-from typing import Callable, Tuple
+from methods import functions, method_names, methods, function_critical_points
+from typing import Callable, Tuple, List
 from sympy import Add
 
 
-def get_method(index: int) -> Callable[[int, float, Add, float, float], Tuple[int, float]]:
+def get_method(index: int) -> Callable[[int, float, Add, float, float, List[Tuple[float, bool, bool]]], Tuple[bool, int, float]]:
     if index < 0 or index > len(methods) - 1:
         raise ValueError
     return methods[index]
 
 
-def get_function(index: int) -> Add:
+def get_function(index: int) -> Tuple[Add, List[Tuple[float, bool, bool]]]:
     if index < 0 or index > len(functions) - 1:
         raise ValueError
-    return functions[index]
+    return functions[index], function_critical_points[index]
 
 
 def print_functions() -> None:
@@ -31,9 +31,12 @@ def get_error_length(eps: float) -> int:
     return abs(int(str(eps).split("e")[1]))
 
 
-def print_results(results: Tuple[int, float], eps: float) -> None:
-    print(f"Итоговое число разбиений: {results[0]}")
-    print(f"Значение интеграла: {round(results[1], get_error_length(eps))}")
+def print_results(results: Tuple[bool, int, float], eps: float) -> None:
+    if not results[0]:
+        print("Интеграл расходится.")
+        return
+    print(f"Итоговое число разбиений: {results[1]}")
+    print(f"Значение интеграла: {round(results[2], get_error_length(eps))}")
 
 
 def main():
@@ -41,7 +44,7 @@ def main():
         print("Введите номер функции")
         print_functions()
         function_number = int(input())
-        func = get_function(function_number - 1)
+        func, critical_points = get_function(function_number - 1)
         print("Введите номер метода")
         print_methods()
         method_number = int(input())
@@ -50,7 +53,7 @@ def main():
         if b < a:
             raise ValueError
         eps = float(input("Введите погрешность вычисления: "))
-        print_results(method(4, eps, func, a, b), eps)
+        print_results(method(4, eps, func, a, b, critical_points), eps)
     except ValueError:
         print("Неверное значение")
 

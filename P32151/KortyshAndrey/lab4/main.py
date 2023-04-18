@@ -1,5 +1,5 @@
 from typing import Tuple, List
-from functions import get_linear, var
+from functions import get_polynom, var
 import matplotlib.pyplot as plt
 from sympy import Add, lambdify
 import numpy as np
@@ -37,7 +37,6 @@ def input_from_console() -> Tuple[List[float], List[float]]:
 
 def main():
     try:
-        functions = []
         file_descriptor = int(input("Введите 0 для ввода из консоли, 1 для ввода из файла:\n"))
         if file_descriptor == 0:
             x, y = input_from_console()
@@ -45,11 +44,12 @@ def main():
             x, y = input_from_file(input("Введите имя файла:\n"))
         else:
             raise ValueError
-        linear_func, linear_dev = get_linear(x, y)
-        functions.append(linear_func)
-
-
-        plot(x, y, functions)
+        results = []
+        for i in range(1, 4):
+            func, dev = get_polynom(x, y, i)
+            results.append((func, dev))
+        print([i[0] for i in results])
+        plot(x, y, [i[0] for i in results])
     except ValueError:
         print("Неправильный ввод.")
 

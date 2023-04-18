@@ -1,5 +1,5 @@
 from typing import Tuple, List
-from functions import get_polynom, var
+from functions import get_polynom, var, get_exponential, get_power, get_logarithmic
 import matplotlib.pyplot as plt
 from sympy import Add, lambdify
 import numpy as np
@@ -7,7 +7,7 @@ import numpy as np
 
 def plot(x: List[float], y: List[float], functions: List[Add]) -> None:
     # Colors for functions
-    colors = ["green", "blue", "yellow"]
+    colors = ["green", "blue", "yellow", "orange", "purple", "red"]
 
     # Plot initial points
     plt.scatter(x, y, color="red")
@@ -48,9 +48,12 @@ def main():
         for i in range(1, 4):
             func, dev = get_polynom(x, y, i)
             results.append((func, dev))
+        results.append(get_exponential(x, y))
+        results.append(get_power(x, y))
+        results.append(get_logarithmic(x, y))
         print([i[0] for i in results])
         plot(x, y, [i[0] for i in results])
-    except ValueError:
+    except ValueError as e:
         print("Неправильный ввод.")
 
 

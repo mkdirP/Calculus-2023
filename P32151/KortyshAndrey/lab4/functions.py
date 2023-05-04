@@ -31,35 +31,49 @@ def get_polynom_coefficients(x: List[float], y: List[float], deg: int) -> List[f
     return coefficients
 
 
-def get_polynom(x: List[float], y: List[float], deg: int) -> Tuple[Add, float]:
+def get_polynom(x: List[float], y: List[float], deg: int, precision: float) -> Tuple[Add, float]:
     func: Add = Add(0)
     for index, coef in enumerate(get_polynom_coefficients(x, y, deg)):
-        func += (var**index)*coef
+        func += (var**index)*round(coef, precision)
     return func, get_standard_deviation(func, x, y)
 
 
-def get_exponential(x: List[float], y: List[float]) -> Tuple[Add, float]:
+def get_exponential(x: List[float], y: List[float], precision: float) -> Tuple[Add, float]:
     lny = list(map(math.log, y))
     a, b = get_polynom_coefficients(x, lny, 1)
-    func: Add = math.exp(a)*sympy.exp(b*var)
+    func: Add = round(math.exp(a), precision)*sympy.exp(round(b, precision)*var)
     return func, get_standard_deviation(func, x, y)
 
 
-def get_power(x: List[float], y: List[float]) -> Tuple[Add, float]:
+def get_power(x: List[float], y: List[float], precision: float) -> Tuple[Add, float]:
     lnx = list(map(math.log, x))
     lny = list(map(math.log, y))
     a, b = get_polynom_coefficients(lnx, lny, 1)
-    func: Add = math.exp(a) * var**b
+    func: Add = round(math.exp(a), precision) * var**(round(b, precision))
     return func, get_standard_deviation(func, x, y)
 
 
-def get_logarithmic(x: List[float], y: List[float]) -> Tuple[Add, float]:
+def get_logarithmic(x: List[float], y: List[float], precision: float) -> Tuple[Add, float]:
     lnx = list(map(math.log, x))
     a, b = get_polynom_coefficients(lnx, y, 1)
-    func: Add =b*sympy.ln(var) + a
+    func: Add = round(b, precision)*sympy.ln(var) + round(a, precision)
     return func, get_standard_deviation(func, x, y)
 
 
 def get_standard_deviation(func: Add, x: List[float], y: List[float]) -> float:
     callable_function: Callable[[float], float] = lambdify(var, func, "numpy")
     return (sum((callable_function(x_i) - y_i) ** 2 for x_i, y_i in zip(x, y)) / len(x)) ** .5
+
+
+def get_extra_information(func: Add, x: List[float], y: List[float]) -> Tuple[List[float], List[float]]:
+    callable_function = lambdify(var, func, "numpy")
+    phi = [callable_function(x_i) for x_i in x]
+    epsilon = [phi_i - y_i for phi_i, y_i in zip(phi, y)]
+    return phi, epsilon
+
+
+def get_pirson_coefficient(x: List[float], y: List[float]) -> float:
+    mean_x = sum(x) / len(x)
+    mean_y = sum(y) / len(y)
+    return sum((x_i - mean_x)*(y_i - mean_y) for x_i, y_i in zip(x, y)) /\
+           ((sum((x_i - mean_x)**2 for x_i in x)*sum((y_i - mean_y)**2 for y_i in y))**.5)

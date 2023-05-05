@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dddcb55-6a51-4e46-b3b1-39aeb15799df" name="Changes" comment="" />
+    <list default="true" id="7dddcb55-6a51-4e46-b3b1-39aeb15799df" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/approximation/line.py" beforeDir="false" afterPath="$PROJECT_DIR$/approximation/line.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/util.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,7 +34,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "anyarusova__lab02",
+    "git-widget-placeholder": "anyarusova__lab04",
     "last_opened_file_path": "D:/university_hse/calculus/lab_02",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -50,7 +54,8 @@
       <updated>1683234413963</updated>
       <workItem from="1683234414963" duration="460000" />
       <workItem from="1683234972110" duration="3106000" />
-      <workItem from="1683279245619" duration="2011000" />
+      <workItem from="1683279245619" duration="2123000" />
+      <workItem from="1683286727695" duration="619000" />
     </task>
     <servers />
   </component>

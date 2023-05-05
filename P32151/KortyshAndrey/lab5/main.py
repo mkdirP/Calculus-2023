@@ -2,7 +2,8 @@ from typing import List, Tuple
 from sympy import Add, lambdify
 import matplotlib.pyplot as plt
 import numpy as np
-from methods import get_finite_differences, get_lagrange_polynom, var, get_gauss_polynom
+from methods import get_finite_differences, get_lagrange_polynom, var, get_gauss_polynom, get_stirling_polynom,\
+    get_bessel_polynom, functions
 import warnings
 
 
@@ -11,11 +12,15 @@ warnings.filterwarnings("ignore")
 
 def plot_results(results: List[Tuple[Add, float, str]], x: List[float], y: List[float], x_ans: float) -> None:
     plt.plot(x, y, color="black")
-    xs = np.linspace(min(x), max(x), 1000)
-    ys = list(map(lambdify(var, results[1][0], "numpy"), xs))
-    plt.plot(xs, ys, color="blue")
     plt.scatter(x, y, color="red")
-    plt.scatter([x_ans], [results[1][1]], color="green")
+    colors = ["blue", "orange", "yellow", "green"]
+    # plt.scatter([x_ans], [results[1][1]], color="green", label="gauss interpolation")
+    for index, result in enumerate(results):
+        xs = np.linspace(min(x), max(x), 1000)
+        ys = list(map(lambdify(var, result[0], "numpy"), xs))
+        plt.plot(xs, ys, color=colors[index])
+        plt.scatter([x_ans], [result[1]], label=result[2], color=colors[index])
+    plt.legend()
     plt.show()
 
 
@@ -33,6 +38,17 @@ def print_results(results: List[Tuple[Add, float, str]], precision=3) -> None:
         print(f"Результат {result[2]}: {round(result[1], precision)}")
 
 
+def print_functions():
+    for index, func in enumerate(functions):
+        print(f"{index}. {func}")
+
+
+def get_x_y_from_function(func: Add, a: int, b: int, n: int) -> Tuple[List[float], List[float]]:
+    x = list(np.linspace(a, b, n))
+    y = list(map(lambdify(var, func, "numpy"), x))
+    return x, y
+
+
 def main():
     precision = 4
     try:
@@ -48,8 +64,16 @@ def main():
                 x = list(map(float, f.readline().split()))
                 y = list(map(float, f.readline().split()))
         elif choice == 2:
-            # TODO choose a function and get x, y from it
-            pass
+            print_functions()
+            index = int(input("Введите индекс функции:\n"))
+            if index < 0 or index >= len(functions):
+                raise ValueError
+            cur_function = functions[index]
+            a, b = [int(i) for i in input("Введите концы интервала через пробел:\n").split()]
+            n = int(input("Введите количество промежутков:\n"))
+            if n <= 0:
+                raise ValueError
+            x, y = get_x_y_from_function(cur_function, a, b, n)
 
         x_ans = float(input("Введите интересующее вас значение аргумента:\n"))
 
@@ -67,7 +91,7 @@ def main():
         # input over
 
         # pretty self-explanatory
-        differences = get_finite_differences(x, y)
+        differences = get_finite_differences(y)
         print_finite_differences(differences, precision)
 
         # calculate
@@ -78,6 +102,12 @@ def main():
 
         gauss_polynom, y_ans_gauss = get_gauss_polynom(x, y, x_ans)
         results.append((gauss_polynom, y_ans_gauss, "метода Гаусса"))
+
+        stirling_polynom, y_ans_stirling = get_stirling_polynom(x, y, x_ans)
+        results.append((stirling_polynom, y_ans_stirling, "метода Стирлинга"))
+
+        bessel_polynom, y_ans_bessel = get_bessel_polynom(x, y, x_ans)
+        results.append((bessel_polynom, y_ans_bessel, "метода Бессела"))
 
         plot_results(results, x, y, x_ans)
         print_results(results, precision)

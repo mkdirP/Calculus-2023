@@ -10,7 +10,7 @@ public class MiddleRectangleMethod implements Method {
         for (int i = 0; i < methodData.getN(); i++) {
             double x = methodData.getEquation().apply(methodData.getA() + (i + 0.5) * h);
             if (Double.isNaN(x) || Double.isInfinite(x)) {
-                throw new IllegalArgumentException("Integral doesn't exist, function is not continuous in " + (methodData.getA() + (i + 0.5) * h));
+                x = methodData.getEquation().apply(methodData.getA() + (i + 1) * h - methodData.getEpsilon());
             } else {
                 result += x;
             }

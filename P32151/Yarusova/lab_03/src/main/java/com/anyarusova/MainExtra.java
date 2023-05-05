@@ -40,14 +40,6 @@ public class MainExtra {
             System.out.println("Number of intervals: 0");
             return;
         }
-        if (Double.isNaN(methodData.getEquation().apply(methodData.getA())) || Double.isInfinite(methodData.getEquation().apply(methodData.getA())) ) {
-            System.out.println("Integral doesn't exist, function is not continuous in " + methodData.getA());
-            return;
-        }
-        if (Double.isNaN(methodData.getEquation().apply(methodData.getB())) || Double.isInfinite(methodData.getEquation().apply(methodData.getB())) ) {
-            System.out.println("Integral doesn't exist, function is not continuous in " + methodData.getB());
-            return;
-        }
         double I0, I1;
         try {
             I1 = method.calculateIntegral(methodData);

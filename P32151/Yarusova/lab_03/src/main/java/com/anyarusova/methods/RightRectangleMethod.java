@@ -10,7 +10,7 @@ public class RightRectangleMethod implements Method {
         for (int i = 1; i <= methodData.getN(); i++) {
             double x = methodData.getEquation().apply(methodData.getA() + i * h);
             if (Double.isNaN(x) || Double.isInfinite(x)) {
-                throw new IllegalArgumentException("Integral doesn't exist, function is not continuous in " + (methodData.getA() + i * h));
+                x = methodData.getEquation().apply(methodData.getA() + (i + 1) * h - methodData.getEpsilon());
             } else {
                 result += x;
             }

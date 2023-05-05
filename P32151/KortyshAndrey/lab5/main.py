@@ -107,7 +107,7 @@ def main():
         results.append((stirling_polynom, y_ans_stirling, "метода Стирлинга"))
 
         bessel_polynom, y_ans_bessel = get_bessel_polynom(x, y, x_ans)
-        results.append((bessel_polynom, y_ans_bessel, "метода Бессела"))
+        results.append((bessel_polynom, y_ans_bessel, "метода Бесселя"))
 
         plot_results(results, x, y, x_ans)
         print_results(results, precision)

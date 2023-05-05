@@ -19,9 +19,10 @@ def plot(x: List[float], y: List[float], functions: List[Add]) -> None:
     x_vals = np.linspace(min(x) - 2, max(x) + 2, 1000)
     for index, func in enumerate(functions):
         y_vals = list(map(lambdify(var, func, "numpy"), x_vals))
-        plt.plot(x_vals, y_vals, colors[index % len(colors)])
+        plt.plot(x_vals, y_vals, colors[index % len(colors)], label=str(func))
     plt.xlabel("x - axis")
     plt.ylabel("y - axis")
+    plt.legend()
     plt.show()
 
 

@@ -81,12 +81,15 @@ def main():
             raise ValueError
         if len(x) < 2:
             raise ValueError
-        if len(set(x)) != len(x):
-            raise ValueError
+        # if len(set(x)) != len(x):
+        #     raise ValueError
 
-        dict_x_to_y = {x_i: y_i for x_i, y_i in zip(x, y)}
-        x.sort()
-        y = [dict_x_to_y[x_i] for x_i in x]
+        # Берем среднее по ординате у двух и более одинаковых x_i
+        dict_x_to_y = {}
+        for x_i, y_i in zip(x, y):
+            dict_x_to_y[x_i] = dict_x_to_y.get(x_i, []) + [y_i]
+        x = sorted(set(x))
+        y = [sum(dict_x_to_y[x_i]) / len(dict_x_to_y[x_i]) for x_i in x]
 
         # input over
 

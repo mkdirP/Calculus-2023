@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 
 def sort_data(data):
-    data['dots'].sort(key=lambda x: x[1])
+    data['dots'].sort(key=lambda x: x[0])
     return data
 
 
@@ -10,8 +10,9 @@ def check_none(results):
     none_methods = []
     for method in results:
         if results[method] is None:
-            results.pop(method)
             none_methods.append(method)
+    for none_method in none_methods:
+        results.pop(none_method)
     return none_methods
 
 

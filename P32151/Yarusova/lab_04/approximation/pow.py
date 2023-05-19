@@ -5,7 +5,7 @@ from approximation import line
 
 def pow(dots):
     n = len(dots)
-    if not all([dot[0] >= 0 and dot[1] >= 0 for dot in dots]):
+    if not all([dot[0] > 0 and dot[1] > 0 for dot in dots]):
         return None
     x = [dot[0] for dot in dots]
     y = [dot[1] for dot in dots]

@@ -12,6 +12,7 @@ def square(dots):
     sum_x3 = sum([x[i] ** 3 for i in range(n)])
     sum_x4 = sum([x[i] ** 4 for i in range(n)])
     sum_x2y = sum([x[i] ** 2 * y[i] for i in range(n)])
+    print(sum_x, sum_y, sum_x2, sum_xy, sum_x3, sum_x4, sum_x2y)
     # a0 + a1 * x + a2 * x^2 = y
     # a0 * n + a1 * sum_x + a2 * sum_x2 = sum_y
     # a0 * sum_x + a1 * sum_x2 + a2 * sum_x3 = sum_xy

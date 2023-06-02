@@ -1,5 +1,4 @@
 
-
 def lagrange(data, interpolation_dot):
     n = len(data['x'])
     result = 0

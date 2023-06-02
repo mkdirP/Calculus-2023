@@ -2,7 +2,6 @@ from math import sin
 
 
 def get_data():
-    data = []
     input_format = choose_input_format()
     dots = []
     match input_format:
@@ -14,13 +13,11 @@ def get_data():
             dots = read_dots_from_function()
     dots.sort()
     method = choose_method()
-    match method:
-        case 2, 3:
-            dots = check_dots(dots)
-            if dots is None:
-                return None
+    checked_dots = check_dots(dots)
+    if checked_dots is None:
+        return None
     data = {'x': [dot[0] for dot in dots], 'y': [dot[1] for dot in dots]}
-    interpolation_dot = choose_interpolation_dot()
+    interpolation_dot = choose_interpolation_dot(dots)
     return data, method, interpolation_dot
 
 
@@ -77,7 +74,7 @@ def read_dots_from_file():
 def read_dots_from_function():
     print("Choose the function: ")
     print("1. y = x^2 (default)")
-    print("2. y = 1 / x")
+    print("2. y = 1 / (x^2 + 1)")
     print("3. y = sin(x)")
     input_function = int(input())
     if input_function not in [1, 2, 3]:
@@ -86,7 +83,7 @@ def read_dots_from_function():
     func = lambda x: x ** 2
     match input_function:
         case 2:
-            func = lambda x: 1 / x
+            func = lambda x: 1 / (x ** 2 + 1)
         case 3:
             func = lambda x: sin(x)
     print("Enter interval: ")
@@ -116,8 +113,8 @@ def read_dots_from_function():
 
 def choose_method():
     print("Choose the method:")
-    print("1. Newton")
-    print("2. Lagrange")
+    print("1. Lagrange")
+    print("2. Newton")
     print("3. Both (default))")
     method = int(input())
     if method not in [1, 2, 3]:
@@ -128,11 +125,14 @@ def choose_method():
 
 def check_dots(dots):
     unique = set()
+    i = 0
     for dot in dots:
         if dot[0] in unique:
             print("All x must be different (delete this dot)" + str(dot))
+            dots[i][1] = (dots[i - 1][1] + dots[i][1]) / 2
             dots.pop(dot)
         unique.add(dot[0])
+        i += 1
     if len(dots) < 3:
         print("You must enter at least 3 unique dots")
         return None

@@ -13,9 +13,6 @@ def get_data():
             dots = read_dots_from_function()
     dots.sort()
     method = choose_method()
-    checked_dots = check_dots(dots)
-    if checked_dots is None:
-        return None
     data = {'x': [dot[0] for dot in dots], 'y': [dot[1] for dot in dots]}
     interpolation_dot = choose_interpolation_dot(dots)
     return data, method, interpolation_dot
@@ -37,6 +34,7 @@ def read_dots():
     print("Enter dots in format: x y")
     print("Enter 'stop' to stop entering dots")
     data = []
+    unique = {}
     while True:
         line = input().strip()
         if line == 'stop':
@@ -48,7 +46,13 @@ def read_dots():
         if len(dot) != 2:
             print("You must enter 2 numbers")
             continue
-        data.append(dot)
+        if dot[0] in unique:
+            print("All x must be different (delete this dot)" + str(dot))
+            unique[dot[0]] = (dot[1] + unique[dot[0]]) / 2
+            continue
+        unique[dot[0]] = dot[1]
+    for dot in unique:
+        data.append((dot, unique[dot]))
     return data
 
 
@@ -57,6 +61,7 @@ def read_dots_from_file():
     file = input()
     f = open(file, 'r')
     data = []
+    unique = {}
     for line in f:
         if line.strip() == 'stop':
             break
@@ -64,7 +69,14 @@ def read_dots_from_file():
         if len(dot) != 2:
             print("You must enter 2 numbers for each dot")
             return None
-        data.append(dot)
+        # check if x is unique
+        if dot[0] in unique:
+            print("All x must be different (delete this dot)" + str(dot))
+            unique[dot[0]] = (dot[1] + unique[dot[0]]) / 2
+            continue
+        unique[dot[0]] = dot[1]
+    for dot in unique:
+        data.append((dot, unique[dot]))
     if len(data) < 3:
         print("You must enter at least 3 dots")
         return None
@@ -121,22 +133,6 @@ def choose_method():
         print("Wrong method (default)")
         method = 3
     return method
-
-
-def check_dots(dots):
-    unique = set()
-    i = 0
-    for dot in dots:
-        if dot[0] in unique:
-            print("All x must be different (delete this dot)" + str(dot))
-            dots[i][1] = (dots[i - 1][1] + dots[i][1]) / 2
-            dots.pop(dot)
-        unique.add(dot[0])
-        i += 1
-    if len(dots) < 3:
-        print("You must enter at least 3 unique dots")
-        return None
-    return dots
 
 
 def choose_interpolation_dot(dots):

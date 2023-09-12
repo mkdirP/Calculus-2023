@@ -1,0 +1,1 @@
+LinearResult{root=3.8658934876489637, error=0.003825473956743153, numOfStep=3}
